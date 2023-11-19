@@ -1,35 +1,111 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [toolsList, setToolsList] = useState([]);
+  const [searchTool, setSearchTool] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  const totalToolsPerPage = 12;
+
+  useEffect(() => {
+    axios
+      .get("https://pluga.co/ferramentas_search.json")
+      .then((response) => {
+        console.log(response)
+        setToolsList(response.data)
+      })
+  }, []);
+
+  const filteredToolsList = toolsList.filter((tool) =>
+    tool.name.toLowerCase().includes(searchTool.toLowerCase())
+  );
+
+  const indexOfLastTool = currentPage * totalToolsPerPage;
+  const indexOfFirstTool = indexOfLastTool - totalToolsPerPage;
+  const currentTools = filteredToolsList.slice(indexOfFirstTool, indexOfLastTool);
+
+  const renderTools = () => {
+    if (currentTools.length > 0) {
+      return currentTools.map((tool) => (
+        <Card key={tool.app_id} data={tool} onCardClick={handleCardClick} />
+      ));
+    } 
+
+    return (
+      <p>Nenhuma ferramenta encontrada...</p>
+    )
+  };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    setIsPopupOpen(true);
+  };
 
   return (
-    <>
+    <div className="main-container">
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Buscar Ferramenta..."
+        value={searchTool}
+        onChange={(event) => {
+          setSearchTool(event.target.value);
+          setCurrentPage(1);
+        }}
+      />
+      <div className="tools-container">
+          {renderTools()} 
+      </div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {filteredToolsList.length > totalToolsPerPage ? (
+          <ul className="pagination-container">
+            {Array.from({ length: Math.ceil(filteredToolsList.length / totalToolsPerPage) }, (_, index) => (
+              <li key={index} className={currentPage === index + 1 ? "active" : ""} onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul className="pagination-container">
+            <li className="active">1</li>
+          </ul>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      {isPopupOpen && selectedCard && (
+        <Popup data={selectedCard} onClose={() => setIsPopupOpen(false)} />
+      )}
+    </div>
   )
+}
+
+function Card({ data, onCardClick }) {
+  return (
+    <div className="card-container" onClick={() => onCardClick(data)}>
+      <img src={data.icon} alt="" />
+      <p>{data.name}</p>
+    </div>
+  )
+}
+
+function Popup({ data, onClose }) {
+  return (
+    <div className="popup">
+      <div className="popup-content">
+        <h2>{data.name}</h2>
+        {/* Adicione outras informações do card conforme necessário */}
+        <button onClick={onClose}>Fechar</button>
+      </div>
+    </div>
+  );
 }
 
 export default App
