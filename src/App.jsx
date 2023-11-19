@@ -100,8 +100,13 @@ function Popup({ data, onClose }) {
   return (
     <div className="popup">
       <div className="popup-content">
-        <h2>{data.name}</h2>
-        {/* Adicione outras informações do card conforme necessário */}
+        <div className="popup-first-frame">
+          <img src={data.icon} alt="" />
+          <div className="popup-infos-container">
+            <h2 className="popup-title-text">{data.name}</h2>
+            <a className="popup-title-link" href={data.link} target="_blank" rel="noreferrer">ACESSAR</a>
+          </div>
+        </div>
         <button onClick={onClose}>Fechar</button>
       </div>
     </div>
