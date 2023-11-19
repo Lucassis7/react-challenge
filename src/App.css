@@ -67,6 +67,19 @@
   color: #FFF;
 }
 
+.empty-tool-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+}
+
+.empty-tool-container img {
+  max-width: 300px;
+  max-height: 300px;
+}
+
 .card-container {
   display: flex;
   flex-direction: column;
@@ -120,6 +133,19 @@
 
 .popup-content button {
   margin-top: 50px;
+  border-style: none;
+  text-decoration: none;
+  border: 2px solid #27AAE1;
+  padding: 15px 45px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.popup-content button:hover {
+  background-color: #27AAE1;
+  cursor: pointer;
+  color: #FFF;
 }
 
 .popup-first-frame {
@@ -159,4 +185,23 @@
 
 .popup-title-link:hover {
   background-color: #0090CE;
+}
+
+.popup-last-tools {
+  margin-top: 50px;
+}
+
+.popup-last-tools h3 {
+  color: #27AAE1 ;
+}
+
+.last-tools-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.last-tools-container p {
+  font-size: 14px;
+  font-weight: 700;
 }
