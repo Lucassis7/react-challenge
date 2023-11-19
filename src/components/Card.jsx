@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 function Card({ data, onCardClick }) {
   return (
     <div className="card-container" onClick={() => onCardClick(data)}>
-      <img src={data.icon} alt="" />
+      <img src={data.icon} alt={`Image icon for the tool ${data.name}`} />
       <p>{data.name}</p>
     </div>
   )

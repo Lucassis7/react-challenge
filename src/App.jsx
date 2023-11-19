@@ -40,7 +40,7 @@ function App() {
 
     return (
       <div className="empty-tool-container">
-        <img src={assetImage} alt="" />
+        <img src={assetImage} alt="Sad emoji because there are no tools with the search term entered." />
         <h1>Nenhuma ferramenta encontrada... :/</h1>
       </div>
     )

@@ -5,7 +5,7 @@ function Popup({ data, onClose, lastSeenTools }) {
     <div className="popup">
       <div className="popup-content">
         <div className="popup-first-frame">
-          <img src={data.icon} alt="" />
+          <img src={data.icon} alt={`Image icon for the tool ${data.name}`} />
           <div className="popup-infos-container">
             <h2 className="popup-title-text">{data.name}</h2>
             <a className="popup-title-link" href={data.link} target="_blank" rel="noreferrer">ACESSAR</a>
@@ -16,7 +16,7 @@ function Popup({ data, onClose, lastSeenTools }) {
           <div className="last-tools-container">
             {lastSeenTools.map((tool, index) => (
               <div key={index}>
-                <img src={tool.icon} alt="" width="50px" height="50px"/>
+                <img src={tool.icon} alt={`Image icon for the tool ${data.name}`} width="50px" height="50px"/>
                 <p>{tool.name}</p>
               </div>
             ))}
