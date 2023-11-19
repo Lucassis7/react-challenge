@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function Popup({ data, onClose, lastSeenTools }) {
   return (
     <div className="popup">
@@ -25,5 +27,20 @@ function Popup({ data, onClose, lastSeenTools }) {
     </div>
   );
 }
+
+Popup.propTypes = {
+  data: PropTypes.shape({
+    icon: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  lastSeenTools: PropTypes.arrayOf(
+    PropTypes.shape({
+      icon: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default Popup;
