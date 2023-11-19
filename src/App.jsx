@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios';
 import assetImage from './assets/sad-emoji.png';
+import Card from './components/Card';
+import Popup from './components/Popup';
 
 function App() {
   const [toolsList, setToolsList] = useState([]);
   const [searchTool, setSearchTool] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
   const [lastSeenTools, setLastSeenTools] = useState([]);
 
   const totalToolsPerPage = 12;
@@ -19,7 +19,6 @@ function App() {
     axios
       .get("https://pluga.co/ferramentas_search.json")
       .then((response) => {
-        console.log(response)
         setToolsList(response.data)
       })
   }, []);
@@ -96,43 +95,6 @@ function App() {
       )}
     </div>
   )
-}
-
-function Card({ data, onCardClick }) {
-  return (
-    <div className="card-container" onClick={() => onCardClick(data)}>
-      <img src={data.icon} alt="" />
-      <p>{data.name}</p>
-    </div>
-  )
-}
-
-function Popup({ data, onClose, lastSeenTools }) {
-  return (
-    <div className="popup">
-      <div className="popup-content">
-        <div className="popup-first-frame">
-          <img src={data.icon} alt="" />
-          <div className="popup-infos-container">
-            <h2 className="popup-title-text">{data.name}</h2>
-            <a className="popup-title-link" href={data.link} target="_blank" rel="noreferrer">ACESSAR</a>
-          </div>
-        </div>
-        <div className="popup-last-tools">
-          <h3>ÚLTIMAS FERRAMENTAS VISUALIZADAS</h3>
-          <div className="last-tools-container">
-            {lastSeenTools.map((tool, index) => (
-              <div key={index}>
-                <img src={tool.icon} alt="" width="50px" height="50px"/>
-                <p>{tool.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <button onClick={onClose}>Fechar</button>
-      </div>
-    </div>
-  );
 }
 
 export default App
