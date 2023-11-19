@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios';
+import assetImage from './assets/sad-emoji.png';
 
 function App() {
   const [toolsList, setToolsList] = useState([]);
@@ -9,6 +10,8 @@ function App() {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+
+  const [lastSeenTools, setLastSeenTools] = useState([]);
 
   const totalToolsPerPage = 12;
 
@@ -37,7 +40,10 @@ function App() {
     } 
 
     return (
-      <p>Nenhuma ferramenta encontrada...</p>
+      <div className="empty-tool-container">
+        <img src={assetImage} alt="" />
+        <h1>Nenhuma ferramenta encontrada... :/</h1>
+      </div>
     )
   };
 
@@ -48,6 +54,11 @@ function App() {
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setIsPopupOpen(true);
+
+    setLastSeenTools((previousCards) => {
+      const updatedTools = [card, ...previousCards].slice(0, 3);
+      return updatedTools;
+    });
   };
 
   return (
@@ -81,7 +92,7 @@ function App() {
         )}
       </div>
       {isPopupOpen && selectedCard && (
-        <Popup data={selectedCard} onClose={() => setIsPopupOpen(false)} />
+        <Popup data={selectedCard} onClose={() => setIsPopupOpen(false)} lastSeenTools={lastSeenTools} />
       )}
     </div>
   )
@@ -96,7 +107,7 @@ function Card({ data, onCardClick }) {
   )
 }
 
-function Popup({ data, onClose }) {
+function Popup({ data, onClose, lastSeenTools }) {
   return (
     <div className="popup">
       <div className="popup-content">
@@ -105,6 +116,17 @@ function Popup({ data, onClose }) {
           <div className="popup-infos-container">
             <h2 className="popup-title-text">{data.name}</h2>
             <a className="popup-title-link" href={data.link} target="_blank" rel="noreferrer">ACESSAR</a>
+          </div>
+        </div>
+        <div className="popup-last-tools">
+          <h3>ÚLTIMAS FERRAMENTAS VISUALIZADAS</h3>
+          <div className="last-tools-container">
+            {lastSeenTools.map((tool, index) => (
+              <div key={index}>
+                <img src={tool.icon} alt="" width="50px" height="50px"/>
+                <p>{tool.name}</p>
+              </div>
+            ))}
           </div>
         </div>
         <button onClick={onClose}>Fechar</button>
