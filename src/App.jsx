@@ -71,6 +71,7 @@ function App() {
           setSearchTool(event.target.value);
           setCurrentPage(1);
         }}
+        data-testid="search-input"
       />
       <div className="tools-container">
           {renderTools()} 
